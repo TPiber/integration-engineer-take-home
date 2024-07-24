@@ -14,25 +14,36 @@ export const createTask = async (task: Task) => {
 
 export const getTasks = async () => {
   await mongoDatabase.connect();
+
   const tasks = (
     await mongoDatabase.getDocuments("tasks", {
       _id: -1,
     })
-  ).map((task) => ({
-    ...task,
-    id: task._id,
-  }));
+  ).map(({ _id, ...rest }) => ({ ...rest, id: _id }));
+
   return tasks;
 };
 
 export const deleteTask = async (id: string) => {
   await mongoDatabase.connect();
+
   const result = await mongoDatabase.delete("tasks", id);
+
   return result;
 };
 
 export const updateTask = async (id: string, task: Task) => {
   await mongoDatabase.connect();
+
   const result = await mongoDatabase.update("tasks", id, task);
+
+  return result;
+};
+
+export const getTask = async (id: string) => {
+  await mongoDatabase.connect();
+
+  const result = await mongoDatabase.getDocumentById("tasks", id);
+
   return result;
 };
