@@ -23,6 +23,7 @@ function App() {
 
   /* Complete the following functions to hit endpoints on your server */
   const createTask = async () => {
+    if (!formData.title && !formData.description) return;
     const response = await fetch("http://localhost:8000/tasks", {
       method: "POST",
       headers: {
@@ -44,7 +45,7 @@ function App() {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
-  const updateTask = async (id: string) => {
+  const updateTask = async (id: string, value: boolean) => {
     await fetch(`http://localhost:8000/tasks/${id}`, {
       method: "PUT",
       headers: {
@@ -52,44 +53,73 @@ function App() {
       },
       body: JSON.stringify({
         ...tasks.find((task) => task.id === id),
-        done: true,
+        done: value,
       }),
     });
     setTasks(
-      tasks.map((task) => (task.id === id ? { ...task, done: true } : task))
+      tasks.map((task) => (task.id === id ? { ...task, done: value } : task))
     );
   };
 
   return (
-    <div>
-      <h1>Task Management App</h1>
-
-      <div>
-        <h2>Create Task</h2>
-        <input
-          type="text"
-          placeholder="Title"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
-        />
-        <button onClick={createTask}>Create</button>
-      </div>
-      <ul>
+    <div className="container">
+      <h1 className="container-title">Task Management</h1>
+      <form
+        className="task-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          createTask();
+        }}
+      >
+        <div className="form-inputs">
+          <input
+            type="text"
+            placeholder="Title"
+            value={formData.title}
+            required
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Description"
+            value={formData.description}
+            required
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+          />
+        </div>
+        <button className="form-button">Create</button>
+      </form>
+      <ul className="task-list">
         {tasks.map((task) => (
-          <li key={task.id}>
-            <h3>{task.title}</h3>
-            <p>{task.description}</p>
-            <p>{task.done ? "Done" : "Not Done"}</p>
-            <button onClick={() => updateTask(task.id)}>Update</button>
-            <button onClick={() => deleteTask(task.id)}>Delete</button>
+          <li key={task.id} className={`task${task.done ? " done" : ""}`}>
+            <input
+              className="task-checkbox"
+              type="checkbox"
+              checked={task.done}
+              onChange={(e) => updateTask(task.id, e.target.checked)}
+            />
+            <div className="task-text">
+              <h3 className="task-title">{task.title}</h3>
+              <p className="task-description">{task.description}</p>
+            </div>
+            <button
+              className="task-delete-button"
+              onClick={() => deleteTask(task.id)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="currentColor"
+              >
+                <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+              </svg>
+            </button>
           </li>
         ))}
       </ul>
