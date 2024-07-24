@@ -40,7 +40,14 @@ export const deleteTask = async (id: string) => {
 export const updateTask = async (id: string, task: Task) => {
   await mongoDatabase.connect();
 
-  const result = await mongoDatabase.update("tasks", id, task);
+  await mongoDatabase.update("tasks", id, task);
+
+  const { _id, ...rest } = (await mongoDatabase.getDocumentById(
+    "tasks",
+    id
+  )) as WithId<Document>;
+
+  const result = { ...rest, id: _id };
 
   return result;
 };
@@ -48,7 +55,12 @@ export const updateTask = async (id: string, task: Task) => {
 export const getTask = async (id: string) => {
   await mongoDatabase.connect();
 
-  const result = await mongoDatabase.getDocumentById("tasks", id);
+  const { _id, ...rest } = (await mongoDatabase.getDocumentById(
+    "tasks",
+    id
+  )) as WithId<Document>;
+
+  const result = { ...rest, id: _id };
 
   return result;
 };

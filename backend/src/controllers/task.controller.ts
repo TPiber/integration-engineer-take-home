@@ -38,8 +38,10 @@ export const deleteTaskController = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    const result = await deleteTask(id);
-    res.status(200).json(result);
+    await deleteTask(id);
+    res.status(200).json({
+      message: `Task with id ${id} has been deleted`,
+    });
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
@@ -68,6 +70,7 @@ export const getTaskController = async (req: Request, res: Response) => {
 
   try {
     const result = await getTask(id);
+
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
