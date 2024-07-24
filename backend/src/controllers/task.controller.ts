@@ -28,8 +28,10 @@ export const getTasksController = async (_: Request, res: Response) => {
 
 export const deleteTaskController = async (req: Request, res: Response) => {
   try {
-    const id = Buffer.from(req.params.id);
+    const id = req.params.id;
+
     const result = await deleteTask(id);
+
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
@@ -38,7 +40,7 @@ export const deleteTaskController = async (req: Request, res: Response) => {
 
 export const updateTaskController = async (req: Request, res: Response) => {
   try {
-    const id = Buffer.from(req.params.id);
+    const id = req.params.id;
     const task = req.body;
 
     const result = await updateTask(id, task);

@@ -1,4 +1,4 @@
-import { Document, MongoClient } from "mongodb";
+import { Document, MongoClient, ObjectId, SortDirection } from "mongodb";
 
 export class MongoDatabase {
   private client: MongoClient;
@@ -32,19 +32,32 @@ export class MongoDatabase {
   }
 
   // Fetches all documents from a specified collection
-  async getDocuments(collectionName: string) {
-    return await this.getCollection(collectionName).find().toArray();
+  async getDocuments(
+    collectionName: string,
+    sort: {
+      [key: string]: SortDirection;
+    }
+  ) {
+    return await this.getCollection(collectionName).find().sort(sort).toArray();
+  }
+
+  async getDocumentById(collectionName: string, id: string) {
+    return await this.getCollection(collectionName).findOne({
+      _id: new ObjectId(id),
+    });
   }
 
   // Deletes a document from a specified collection by its ID
-  async delete(collectionName: string, id: Uint8Array) {
-    return await this.getCollection(collectionName).deleteOne({ _id: id });
+  async delete(collectionName: string, id: string) {
+    return await this.getCollection(collectionName).deleteOne({
+      _id: new ObjectId(id),
+    });
   }
 
   // Updates a document in a specified collection by its ID
-  async update(collectionName: string, id: Uint8Array, update: Document) {
+  async update(collectionName: string, id: string, update: Document) {
     return await this.getCollection(collectionName).updateOne(
-      { _id: id },
+      { _id: new ObjectId(id) },
       { $set: update } // Uses the $set operator to update the document
     );
   }
