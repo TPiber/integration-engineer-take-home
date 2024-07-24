@@ -194,6 +194,39 @@ button:focus-visible {
   background-color: #646cff;
 }
 
+.error-dialog {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background-color: #ff4d4d;
+  border-radius: 8px;
+  color: #fff;
+  max-width: 300px;
+  width: 100%;
+  height: fit-content;
+}
+
+.error-dialog p {
+  margin: 0;
+}
+
+.error-dialog-top {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.error-dialog-close {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
 @media screen and (max-width: 650px) {
   .task-form {
     flex-direction: column;
@@ -210,5 +243,10 @@ button:focus-visible {
   .container-title {
     font-size: 1.5em;
     margin: 0 15px 15px;
+  }
+
+  .error-dialog {
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
