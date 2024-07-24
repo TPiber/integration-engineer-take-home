@@ -1,5 +1,5 @@
 declare interface Task {
-  id: number;
+  __id: string;
   title: string;
   description: string;
   done: boolean;
