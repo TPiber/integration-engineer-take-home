@@ -88,11 +88,12 @@ button:focus-visible {
   align-items: center;
   margin: calc(100vh / 4) 0 0;
   width: 100vw;
-  max-width: 400px;
+  max-width: 600px;
 }
 
 .task-form {
   display: flex;
+  flex-direction: column;
   gap: 10px;
   background-color: #474744;
   padding: 20px;
@@ -158,10 +159,15 @@ button:focus-visible {
   text-decoration: line-through;
 }
 
-.task-delete-button {
+.task-button {
   display: flex;
   justify-content: center;
   margin: 0 0 0 auto;
+}
+
+.task-buttons {
+  display: flex;
+  gap: 10px;
 }
 
 .task-checkbox {
@@ -170,7 +176,7 @@ button:focus-visible {
   width: 20px;
   height: 20px;
   z-index: 1;
-  margin: 0;
+  margin: 0 10px 0 0;
 }
 
 .task-checkbox::before {
@@ -227,19 +233,35 @@ button:focus-visible {
   padding: 0;
 }
 
-@media screen and (max-width: 650px) {
-  .task-form {
-    flex-direction: column;
-  }
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
 }
 
-@media screen and (max-width: 399px) {
+.form-button {
+  flex: 1;
+}
+
+.form-button-secondary {
+  background-color: #646cff;
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+.form-button-secondary:hover {
+  border-color: #1a1a1a;
+}
+
+@media screen and (max-width: 600px) {
   .task-form,
   .task {
     border-radius: 0;
     padding: 15px;
   }
+}
 
+@media screen and (max-width: 399px) {
   .container-title {
     font-size: 1.5em;
     margin: 0 15px 15px;
@@ -248,5 +270,17 @@ button:focus-visible {
   .error-dialog {
     left: 50%;
     transform: translateX(-50%);
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+
+  .task-buttons {
+    flex-direction: column;
+  }
+
+  .task-button {
+    padding: 8px;
   }
 }
