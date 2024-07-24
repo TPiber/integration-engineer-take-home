@@ -1,14 +1,19 @@
 import { MongoDatabase } from "@/database/mongo.database";
+import type { WithId } from "mongodb";
 
 const mongoDatabase = new MongoDatabase();
 
 export const createTask = async (task: Task) => {
   await mongoDatabase.connect();
   const create = await mongoDatabase.create("tasks", task);
-  const result = await mongoDatabase.getDocumentById(
+
+  const { _id, ...rest } = (await mongoDatabase.getDocumentById(
     "tasks",
     create.toString()
-  );
+  )) as WithId<Document>;
+
+  const result = { ...rest, id: _id };
+
   return result;
 };
 
