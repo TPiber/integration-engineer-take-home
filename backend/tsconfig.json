@@ -1,6 +1,7 @@
 {
   "ts-node": {
-    "files": true
+    "files": true,
+    "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
     "target": "ES2021",
@@ -12,7 +13,6 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["types/*.d.ts", "src/*"],
       "@/*": ["src/*"]
     }
   }
